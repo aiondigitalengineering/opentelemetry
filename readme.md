@@ -26,8 +26,8 @@ npm install @aiondigital/opentelemetry
 ```
 2. import and setup
 ```
-const opentelemetry = require('@aiondigital/opentelemetry');
-opentelemetry.setup();
+import { opentelemetry } from '@aiondigital/opentelemetry';
+opentelemetry();
 ```
 3. Configuration
 

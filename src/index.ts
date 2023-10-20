@@ -1,1 +1,6 @@
-export * from './instrumentation';
+import setup from './instrumentation';
+
+
+export {
+    setup as opentelemetry
+};
