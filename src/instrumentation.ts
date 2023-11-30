@@ -43,7 +43,7 @@ interface PrometheusConfig {
 }
 
 // Configuration for Telemetry.
-interface TelemetryConfig {
+export interface TelemetryConfig {
   enabled: boolean;
   debug: boolean;
   appName?: string;
