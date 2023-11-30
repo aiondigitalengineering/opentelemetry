@@ -1,6 +1,6 @@
 {
   "name": "@aiondigital/opentelemetry",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "opentelemetry sdk for nodejs based microservices",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
