@@ -5,13 +5,12 @@ import {
   ParentBasedSampler,
   TraceIdRatioBasedSampler,
 } from '@opentelemetry/sdk-trace-node';
-import { Resource } from '@opentelemetry/resources';
-import { SemanticResourceAttributes } from '@opentelemetry/semantic-conventions';
+import { resourceFromAttributes } from '@opentelemetry/resources';
+import { ATTR_SERVICE_NAME } from '@opentelemetry/semantic-conventions';
 import { OTLPTraceExporter } from '@opentelemetry/exporter-trace-otlp-proto';
 import { registerInstrumentations } from '@opentelemetry/instrumentation';
 import { NestInstrumentation } from '@opentelemetry/instrumentation-nestjs-core';
 import { getNodeAutoInstrumentations } from '@opentelemetry/auto-instrumentations-node';
-import { ExpressInstrumentation } from 'opentelemetry-instrumentation-express';
 import { PrometheusExporter } from '@opentelemetry/exporter-prometheus';
 import { MeterProvider } from '@opentelemetry/sdk-metrics';
 import { Context, SpanKind, Attributes, Link } from '@opentelemetry/api';
@@ -104,10 +103,8 @@ export default function setup() {
         '@opentelemetry/instrumentation-fs': { enabled: false },
         '@opentelemetry/instrumentation-net': { enabled: false },
         '@opentelemetry/instrumentation-dns': { enabled: false },
-        '@opentelemetry/instrumentation-express': { enabled: false },
         '@opentelemetry/instrumentation-dataloader': { enabled: false },
       }),
-      new ExpressInstrumentation(),
     ],
   });
 }
@@ -120,25 +117,25 @@ function setupNodeTracer(config: TelemetryConfig) {
   const serviceName = config.appName;
 
   const provider = new NodeTracerProvider({
-    resource: new Resource({
-      [SemanticResourceAttributes.SERVICE_NAME]: serviceName,
+    resource: resourceFromAttributes({
+      [ATTR_SERVICE_NAME]: serviceName,
     }),
     sampler: new RubixSampler({
       root: new TraceIdRatioBasedSampler(0.5),
     }),
+    spanProcessors: [
+      new BatchSpanProcessor(
+        new OTLPTraceExporter({
+          url: config.jaeger,
+          headers: {
+            Authorization: config.jaeger_token,
+          },
+        }),
+      ),
+    ],
   });
 
   provider.register();
-  provider.addSpanProcessor(
-    new BatchSpanProcessor(
-      new OTLPTraceExporter({
-        url: config.jaeger,
-        headers: {
-          Authorization: config.jaeger_token,
-        },
-      }),
-    ),
-  );
 }
 
 /**
@@ -166,8 +163,7 @@ function metricsProvider(config: TelemetryConfig) {
   );
 
   // Creates MeterProvider and installs the exporter as a MetricReader
-  const meterProvider = new MeterProvider();
-  meterProvider.addMetricReader(metricExporter);
+  const meterProvider = new MeterProvider({ readers: [metricExporter] });
   return meterProvider;
 }
 
