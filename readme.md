@@ -1,9 +1,9 @@
 
-# @aiondigital/opentelemetry
+# @aiondigitalengineering/opentelemetry
 
 ## introduction
 
-`@aiondigital/opentelemetry` is an npm package for setting up OpenTelemetry tracing and metrics in Node.js applications. It provides an easy way to configure and initialize OpenTelemetry instrumentation and exporters.
+`@aiondigitalengineering/opentelemetry` is an npm package for setting up OpenTelemetry tracing and metrics in Node.js applications. It provides an easy way to configure and initialize OpenTelemetry instrumentation and exporters.
 
 
 
@@ -13,7 +13,7 @@
 You can install this package using npm or yarn:
 
 ```bash
-npm install @aiondigital/opentelemetry
+npm install @aiondigitalengineering/opentelemetry
 ```
     
 ## Usage/Examples
@@ -22,11 +22,11 @@ To use this package, you can follow these steps:
 
 1. install the package
 ```
-npm install @aiondigital/opentelemetry
+npm install @aiondigitalengineering/opentelemetry
 ```
 2. import and setup
 ```
-import { opentelemetry } from '@aiondigital/opentelemetry';
+import { opentelemetry } from '@aiondigitalengineering/opentelemetry';
 opentelemetry();
 ```
 3. Configuration
@@ -43,6 +43,19 @@ You can configure the behavior of the package using environment variables. Here 
 - `ENV_RBX_PROMETHEUS_SCRAPPER_PORT`: Specify the Prometheus scrape port.
 
 Make sure to set these environment variables as needed.
+## Registry
+
+From 2.0.0 the package is published to GitHub Packages as `@aiondigitalengineering/opentelemetry`.
+Versions up to 1.0.3 were published to npm as `@aiondigital/opentelemetry`.
+
+Services that import `@aiondigital/opentelemetry` can keep their code unchanged with an npm alias:
+
+```json
+"@aiondigital/opentelemetry": "npm:@aiondigitalengineering/opentelemetry@^2.0.0"
+```
+
+The service `.npmrc` must map the `@aiondigitalengineering` scope to `https://npm.pkg.github.com` with a token that can read packages.
+
 ## License
 
 This package is released under the [MIT License](https://choosealicense.com/licenses/mit/) 
