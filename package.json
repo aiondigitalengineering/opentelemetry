@@ -1,5 +1,5 @@
 {
-  "name": "@aiondigital/opentelemetry",
+  "name": "@aiondigitalengineering/opentelemetry",
   "version": "2.0.0",
   "description": "opentelemetry sdk for nodejs based microservices",
   "main": "dist/index.js",
@@ -11,6 +11,9 @@
     "format": "prettier \"**/*.ts\" --ignore-path ./.prettierignore --write && git status",
     "lint": "eslint \"**/*.{ts,tsx}\"",
     "prepublish": "npm run build"
+  },
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com"
   },
   "repository": {
     "type": "git",
